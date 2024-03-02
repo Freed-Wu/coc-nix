@@ -1,4 +1,4 @@
-name: VSCode CI
+name: Coc CI
 
 on:
   push:
@@ -41,15 +41,13 @@ jobs:
         with:
           node-version: 18
       - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: yarn package
+      - run: yarn pack
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: nix-ide*.vsix
+          files: "*.tgz"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish to Open VSX Registry
-        run: yarn ovsx publish *.vsix --pat ${{ secrets.OPEN_VSX_TOKEN }}
-      - name: Publish to Visual Studio Marketplace
-        run: yarn vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }}
+      - run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
