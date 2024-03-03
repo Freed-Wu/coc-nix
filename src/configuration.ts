@@ -1,7 +1,7 @@
-import { WorkspaceConfiguration, workspace } from "vscode";
-import { LSPObject } from "vscode-languageclient";
+import { WorkspaceConfiguration, workspace } from "coc.nvim";
+import { LSPObject } from "coc.nvim";
 
-import { MessageItem, Uri } from "vscode";
+import { MessageItem, Uri } from "coc.nvim";
 
 export interface UriMessageItem extends MessageItem {
   uri: Uri;
