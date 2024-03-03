@@ -1,7 +1,7 @@
 "use strict";
 
-import * as vscode from "vscode";
-import { Diagnostic, ExtensionContext, TextDocument } from "vscode";
+import * as vscode from "coc.nvim";
+import { Uri, Diagnostic, ExtensionContext, TextDocument } from "coc.nvim";
 import { runInWorkspace } from "./process-runner";
 
 /**
@@ -10,16 +10,17 @@ import { runInWorkspace } from "./process-runner";
  * @param document The document to check
  * @return Whether the document is a Nix document saved to disk
  */
-const isSavedDocument = (document: TextDocument): boolean =>
-  !document.isDirty &&
-  0 <
-    vscode.languages.match(
-      {
-        language: "nix",
-        scheme: "file",
-      },
-      document
-    );
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const isSavedDocument = (_document: TextDocument): boolean => false;
+// !document.isDirty &&
+// 0 <
+//   vscode.languages.match(
+//     {
+//       language: "nix",
+//       scheme: "file",
+//     },
+//     document
+//   );
 
 interface LintErrorType {
   msg: string;
@@ -34,7 +35,7 @@ interface LintErrorType {
  * @return All matches of pattern in text.
  */
 const getErrors = (text: string): ReadonlyArray<LintErrorType> => {
-  const results = [];
+  const results: LintErrorType[] = [];
   // matches both syntax error messages, like:
   // `error: syntax error, unexpected ']', expecting ';', at /home/foo/bar/shell.nix:19:3`
   // as well as symbol error messages, like
@@ -61,15 +62,22 @@ const getErrors = (text: string): ReadonlyArray<LintErrorType> => {
  * @return An array of all diagnostics
  */
 const shellOutputToDiagnostics = (
-  document: TextDocument,
+  _document: TextDocument,
   output: string
 ): ReadonlyArray<Diagnostic> => {
   const diagnostics: Array<Diagnostic> = [];
   for (const err of getErrors(output)) {
-    const range = document.validateRange(
-      new vscode.Range(err.row - 1, err.col - 2, err.row - 1, err.col + 2)
+    // const range = document.validateRange(
+    //   new vscode.Range(err.row - 1, err.col - 2, err.row - 1, err.col + 2)
+    // );
+    const range = vscode.Range.create(
+      err.row - 1,
+      err.col - 2,
+      err.row - 1,
+      err.col + 2
     );
-    const diagnostic = new Diagnostic(range, err.msg);
+    // const diagnostic = new Diagnostic(range, err.msg);
+    const diagnostic = Diagnostic.create(range, err.msg);
     diagnostic.source = "nix";
     diagnostics.push(diagnostic);
   }
@@ -88,12 +96,12 @@ export async function startLinting(context: ExtensionContext): Promise<void> {
   const lint = async (document: TextDocument) => {
     if (isSavedDocument(document)) {
       const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-      let d: ReadonlyArray<Diagnostic>
+      let d: ReadonlyArray<Diagnostic>;
       try {
         const result = await runInWorkspace(workspaceFolder, [
           "nix-instantiate",
           "--parse",
-          document.fileName,
+          Uri.parse(document.uri).fsPath /* fileName */,
         ]);
         d = shellOutputToDiagnostics(document, result.stderr);
       } catch (error) {
@@ -118,4 +126,4 @@ export async function startLinting(context: ExtensionContext): Promise<void> {
     null,
     context.subscriptions
   );
-};
+}

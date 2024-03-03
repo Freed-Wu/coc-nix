@@ -1,5 +1,5 @@
 import { execFile } from "child_process";
-import { WorkspaceFolder } from "vscode";
+import { WorkspaceFolder, Uri } from "coc.nvim";
 
 /**
  * A system error, i.e. an error that results from a syscall.
@@ -72,7 +72,7 @@ export const runInWorkspace = (
   stdin?: string
 ): Promise<IProcessResult> =>
   new Promise((resolve, reject) => {
-    const cwd = folder ? folder.uri.fsPath : process.cwd();
+    const cwd = folder ? Uri.parse(folder.uri).fsPath : process.cwd();
     const child = execFile(
       command[0],
       command.slice(1),

@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
-import { ExtensionContext } from "vscode";
+import * as vscode from "coc.nvim";
+import { ExtensionContext } from "coc.nvim";
 import { formattingProviders } from "./formatter";
 import { startLinting } from "./linter";
 import { config } from "./configuration";
@@ -23,9 +23,11 @@ export async function activate(context: ExtensionContext): Promise<void> {
   } else {
     await startLinting(context);
     const subs = [
-      vscode.languages.registerDocumentFormattingEditProvider,
-      vscode.languages.registerDocumentRangeFormattingEditProvider,
-    ].map((func) => func("nix", formattingProviders));
+      // vscode.languages.registerDocumentFormattingEditProvider,
+      // vscode.languages.registerDocumentRangeFormattingEditProvider,
+      vscode.languages.registerDocumentFormatProvider,
+      vscode.languages.registerDocumentRangeFormatProvider,
+    ].map((func) => func(["nix"], formattingProviders));
     context.subscriptions.concat(subs);
   }
 }

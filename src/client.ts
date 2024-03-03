@@ -1,23 +1,16 @@
 // from PR of https://github.com/nix-community/vscode-nix-ide/pull/16/
 
-import { env, ExtensionContext, Uri, window, workspace } from "vscode";
-import {
-  LanguageClientOptions,
-  LSPArray,
-  ConfigurationParams,
-} from "vscode-languageclient";
-import {
-  Executable,
-  LanguageClient,
-  ServerOptions,
-} from "vscode-languageclient/node";
+import { /* env, */ ExtensionContext, Uri, window, workspace, Thenable } from "coc.nvim";
+import { LanguageClientOptions, LSPArray, ConfigurationParams } from "coc.nvim";
+import { Executable, LanguageClient, ServerOptions } from "coc.nvim";
 import { config, UriMessageItem } from "./configuration";
 
 import commandExists = require("command-exists");
 
 let client: LanguageClient;
 
-export async function activate(context: ExtensionContext): Promise<void> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function activate(_context: ExtensionContext): Promise<void> {
   if (!commandExists.sync(config.serverPath)) {
     const selection = await window.showErrorMessage<UriMessageItem>(
       `Command ${config.serverPath} not found in $PATH`,
@@ -27,7 +20,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
       }
     );
     if (selection?.uri !== undefined) {
-      await env.openExternal(selection?.uri);
+      // await env.openExternal(selection?.uri);
       return;
     }
   }
@@ -68,10 +61,10 @@ export async function activate(context: ExtensionContext): Promise<void> {
   };
 
   client = new LanguageClient("nix", "Nix", serverOptions, clientOptions);
-  client.registerProposedFeatures();
+  // client.registerProposedFeatures();
   await client.start();
 
-  context.subscriptions.push(client);
+  // context.subscriptions.push(client);
 }
 
 export function deactivate(): Thenable<void> | undefined {
