@@ -2,7 +2,7 @@
   "name": "nix-ide",
   "displayName": "Nix IDE",
   "description": "Nix language support - syntax highlighting, formatting, and error reporting.",
-  "version": "0.4.18",
+  "version": "0.4.22",
   "publisher": "jnoortheen",
   "icon": "images/icon.png",
   "license": "MIT",
@@ -141,22 +141,117 @@
         "category": "Nix IDE",
         "command": "nix-ide.restartLanguageServer"
       }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "boolean",
+        "description": "Style for boolean literals",
+        "superType": "keywords"
+      },
+      {
+        "id": "constant",
+        "description": "Style for `builtins` constants"
+      },
+      {
+        "id": "path",
+        "description": "Style for paths"
+      },
+      {
+        "id": "punctuations",
+        "description": "Style for punctuations"
+      }
+    ],
+    "semanticTokenModifiers": [
+      {
+        "id": "builtin",
+        "description": "Style for `builtins` variables and functions"
+      },
+      {
+        "id": "conditional",
+        "description": "Style for conditional operators and keywords"
+      },
+      {
+        "id": "delimiter",
+        "description": "Style for delimiter punctuations"
+      },
+      {
+        "id": "escape",
+        "description": "Style for escape sequences in strings"
+      },
+      {
+        "id": "parenthesis",
+        "description": "Style for parenthesis"
+      },
+      {
+        "id": "unresolved",
+        "description": "Style for unresolved variables"
+      },
+      {
+        "id": "withAttribute",
+        "description": "Style for attributes from `with`"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "nix",
+        "scopes": {
+          "boolean": [
+            "constant.language.boolean.nix"
+          ],
+          "constant.builtin": [
+            "support.const.nix"
+          ],
+          "function.builtin": [
+            "support.function.nix"
+          ],
+          "struct.builtin": [
+            "support.const.nix"
+          ],
+          "path": [
+            "constant.other.path.nix"
+          ],
+          "string": [
+            "string.quoted.double.nix"
+          ],
+          "string.escape": [
+            "constant.character.escape.nix"
+          ],
+          "variable": [
+            "variable.other.nix"
+          ],
+          "variable.unresolved": [
+            "invalid.nix"
+          ],
+          "parameter": [
+            "variable.parameter.name.nix"
+          ],
+          "property": [
+            "entity.other.attribute-name.single.nix"
+          ],
+          "*.withAttribute": [
+            "markup.underline"
+          ],
+          "operator": [
+            "entity.name.operator.nix"
+          ]
+        }
+      }
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.1",
-    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@types/command-exists": "^1.2.3",
-    "@types/node": "^22.10.7",
+    "@types/node": "^24.0.3",
     "@types/vscode": "^1.96.0",
-    "@vscode/vsce": "^3.2.1",
+    "@vscode/vsce": "^3.5.0",
     "js-yaml": "^4.1.0",
-    "lefthook": "^1.10.8",
-    "ovsx": "^0.10.1",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1",
+    "lefthook": "^1.11.14",
+    "ovsx": "^0.10.4",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
     "vscode-tmgrammar-test": "^0.1.3",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "prebuild": "mkdir -p dist && js-yaml syntaxes/nix.YAML-tmLanguage > dist/nix.tmLanguage.json && js-yaml syntaxes/injection.yml > dist/injection.json",
