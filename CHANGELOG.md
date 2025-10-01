@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/nix-community/vscode-nix-ide/compare/v0.4.23...v0.5.0) (2025-10-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove special highlight of comment remarks like todo/fixme
+
+### Features
+
+* set explorer.fileNesting for flake.lock ([#498](https://github.com/nix-community/vscode-nix-ide/issues/498)) ([05b33f2](https://github.com/nix-community/vscode-nix-ide/commit/05b33f2c4c8ca266b02b99fa2771810c7393e649))
+
+
+### Bug Fixes
+
+* **syntax:** syntax highlighting issue with colon after interpolation in nested attrset ([aa8a59d](https://github.com/nix-community/vscode-nix-ide/commit/aa8a59d845efa5bbe69713dfddadd345611e632b)), closes [#355](https://github.com/nix-community/vscode-nix-ide/issues/355)
+* vscode debug launch ([#500](https://github.com/nix-community/vscode-nix-ide/issues/500)) ([620cb85](https://github.com/nix-community/vscode-nix-ide/commit/620cb855221e4f310dc8e470ac366139ad243e1c))
+
+
+* remove special highlight of comment remarks like todo/fixme ([fe0a576](https://github.com/nix-community/vscode-nix-ide/commit/fe0a5763cbe937ffcb00846b053b9928fc919f7e)), closes [#476](https://github.com/nix-community/vscode-nix-ide/issues/476)
+
 ### [0.4.24](https://github.com/nix-community/vscode-nix-ide/compare/v0.4.23...v0.4.24) (2025-09-29)
 
 
